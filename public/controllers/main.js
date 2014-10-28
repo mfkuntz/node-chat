@@ -1,4 +1,5 @@
 var ngApp = angular.module('ngApp', ['ngRoute']);
+
 var loggedIn = false;
 ngApp.config(function($routeProvider, $locationProvider){
 
@@ -13,9 +14,9 @@ ngApp.config(function($routeProvider, $locationProvider){
 		controller : 'loginController'
 	})
 
-	.when('/contact',{
-		templateUrl : '/views/contact.html',
-		controller : 'contactController'
+	.when('/chat',{
+		templateUrl : '../private/views/chat.html',
+		controller : 'chatController'
 	})
 
 	$locationProvider.html5Mode(true);
@@ -25,7 +26,7 @@ ngApp.config(function($routeProvider, $locationProvider){
 
 ngApp.controller('mainController', function($scope){
 	function setLoginLabels(){
-		$scope.lUser = (!loggedIn)? "Login" : "Test User Name";
+		$scope.lUser = (!loggedIn)? "Login" : $scope.userName;
 		$scope.lLoginButton = (!loggedIn)? "Login" : "Logout";
 		$scope.loggedIn = (loggedIn);
 	}
@@ -36,17 +37,63 @@ ngApp.controller('mainController', function($scope){
 
 
 	setLoginLabels();
+	$scope.userName = "Test User";
 });
 
-ngApp.controller('loginController', function($scope){
+ngApp.controller('loginController', function($scope, $http, $window){
 	
+
+
 	$scope.login = function(){
-		loggedIn = !loggedIn;
-		$scope.$emit('login', true);
+		var user = {
+			username : $scope.user.username,
+			password : $scope.user.password
+		};
+		
+		$http
+			.post('/login', user)
+			.success(function(data, status, headers, config){
+				$window.sessionStorage.token = data.token;
+				$scope.$emit('login', true);
+			})
+			.error(function(){
+				delete $window.sessionStorage.token;
+			});
+
+		
 	};
 
 });
 
-ngApp.controller('contactController', function($scope){
-	$scope.message = 'Contact me, or not';
+ngApp.controller('chatController', function($scope){
+	$scope.messages = [
+		{
+			sender : "Bob",
+			text : "Message 1"
+		},
+		{
+			sender : "Bob",
+			text : "Message 2"
+		},
+		{
+			sender : "Bob",
+			text : "Message 3"
+		},
+		{
+			sender : "Bob",
+			text : "Message 4"
+		}
+	];
+
+	$scope.sendMessage = function(){
+		var message = {
+			sender : $scope.userName,
+			text : $scope.formData.chatMessage
+		};
+
+		$scope.formData.chatMessage = "";
+
+		$scope.messages.push(message);
+
+	};
 });

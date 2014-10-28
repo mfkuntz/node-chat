@@ -5,7 +5,12 @@
   "main": "server.js",
   "author": "Matt",
   "dependencies": {
+    "body-parser": "^1.9.1",
     "express": "^4.9.7",
+    "express-json": "^1.0.0",
+    "express-jwt": "^0.4.0",
+    "jsonwebtoken": "^1.1.2",
+    "morgan": "^1.4.0",
     "socket.io": "^1.1.0"
   }
 }

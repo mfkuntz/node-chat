@@ -14,7 +14,7 @@
           <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
 	  <script src="/controllers/main.js"></script>
 
-	  <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
+	  <!--<script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script> -->
 	</head>
 	<body ng-controller="mainController">
 
@@ -36,12 +36,13 @@
 		</header>
 
 		<!-- MAIN CONTENT AND INJECTED VIEWS -->
-		<div id="main">
+		<div id="main" class="container">
+			<form id="theForm">
 			<div ng-view></div>
 
 			<!-- angular templating -->
 			<!-- this is where content will be injected -->
-
+			</form>
 		</div>
 
 	</body>
