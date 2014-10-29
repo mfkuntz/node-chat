@@ -1,6 +1,5 @@
 var ngApp = angular.module('ngApp', ['ngRoute']);
 
-var loggedIn = false;
 ngApp.config(function($routeProvider, $locationProvider){
 
 	$routeProvider
@@ -26,9 +25,8 @@ ngApp.config(function($routeProvider, $locationProvider){
 
 ngApp.controller('mainController', function($scope){
 	function setLoginLabels(){
-		$scope.lUser = (!loggedIn)? "Login" : $scope.userName;
-		$scope.lLoginButton = (!loggedIn)? "Login" : "Logout";
-		$scope.loggedIn = (loggedIn);
+		$scope.lUser = (!isLoggedIn())? "Login" : $scope.userName;
+		$scope.lLoginButton = (!isLoggedIn())? "Login" : "Logout";
 	}
 
 	$scope.$on('login', function(event, args){
@@ -97,3 +95,8 @@ ngApp.controller('chatController', function($scope){
 
 	};
 });
+
+
+function isLoggedIn(){
+	return (window.sessionStorage.token != null);
+}

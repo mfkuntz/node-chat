@@ -31,6 +31,22 @@ require('./app/routes').createRoutes(app);
 // 	});
 // });
 
+var SQLize = require('sequelize');
+var sql = new SQLize('chat', 'adminwriqzjg', 'JUPA_RU4siaq', {
+	dialect : "postgres",
+	port : 5432,
+	host : '127.0.0.1'
+});
+
+sql.authenticate()
+	.complete(function(err){
+		if (!!err){
+			console.log("Connect Failed: ", err);
+		}else{
+			console.log("Connected");
+		}
+	});
 
 
-http.listen(8080);
+
+http.listen(8090);

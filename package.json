@@ -11,6 +11,8 @@
     "express-jwt": "^0.4.0",
     "jsonwebtoken": "^1.1.2",
     "morgan": "^1.4.0",
+    "pg": "^3.6.2",
+    "sequelize": "^2.0.0-rc2",
     "socket.io": "^1.1.0"
   }
 }
