@@ -33,5 +33,9 @@ require('./app/socket')(http);
 // })
 // .save();
 
+var serverInfo = require('./config/config')().server;
 
-http.listen(8090);
+http.listen(serverInfo.port, serverInfo.ip, function() {
+    console.log('%s: Node server started on %s:%d ...',
+                Date(Date.now() ), serverInfo.ip, serverInfo.port);
+});

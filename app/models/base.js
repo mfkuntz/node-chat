@@ -1,8 +1,10 @@
 var SQL = require('sequelize');
-var sql = new SQL('chat', 'adminwriqzjg', 'JUPA_RU4siaq', {
+var dbConfig = require('../../config/config')().database;
+
+var sql = new SQL(dbConfig.db, dbConfig.user, dbConfig.pass, {
 	dialect : "postgres",
-	port : 5432,
-	host : '127.0.0.1'
+	port : dbConfig.port,
+	host : dbConfig.ip
 });
 
 module.exports.sqlConnection = sql;
