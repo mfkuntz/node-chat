@@ -3,8 +3,8 @@ var indexRedirect = require('./routes').indexRedirect;
 
 var config = require('./config');
 
-var expressJWT  =require('express-jwt');
-var jwt = require('jsonwebtoken');
+// var expressJWT  =require('express-jwt');
+// var jwt = require('jsonwebtoken');
 module.exports = function(app){
 
 	app.get('/private/views/chat.html', function(req,res){
@@ -16,7 +16,7 @@ module.exports = function(app){
  	});
 
 
- 	app.use('/api', expressJWT({secret : config.jwtSecret}));
+ 	// app.use('/api', expressJWT({secret : config.jwtSecret}));
 
  	app.post('/login', function(req,res){
 
@@ -27,9 +27,41 @@ module.exports = function(app){
  			id : 12345
  		};
 
- 		var token = jwt.sign(profile, config.jwtSecret, {expiresInMinutes : 60});
+ 		// var token = jwt.sign(profile, config.jwtSecret, {expiresInMinutes : 60});
 
- 		res.json({token : token});
+ 		// res.json({token : token});
 
+ 	});
+
+ 	app.get('/api/chat/:id', function(req, res){
+ 		var Message = require('./models/chat');
+ 		if (req.params.id == -1){
+ 			Message.findAll()
+ 				.complete(function(err, data){
+ 					if (!!err){
+ 						console.log("eror: ", err);
+ 					}else{
+ 						console.log("Success: ", data);
+ 						res.json(data);
+ 					}
+ 				});
+ 			
+ 			
+ 		}else{
+ 			Message.findAll({where : {reciever: req.params.id} })
+ 				.complete(function(err, data){
+ 					if (!!err){
+ 						console.log("eror: ", err);
+ 					}else{
+ 						console.log("Success: ", data);
+ 						res.json(data);
+ 					}
+ 				});
+ 		}
+ 	});
+
+ 	app.post('/api/chat', function(req,res){
+ 		var Message = require('./models/chat');
+ 		Message.create(req.body);
  	});
 };

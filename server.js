@@ -20,8 +20,9 @@ require('./app/routes').createRoutes(app);
 
 require('./app/socket')(http);
 
+//clear table data
 // var message = require('./app/models/chat');
-// message.sync().error(function(error){
+// message.sync({force : true}).error(function(error){
 // 	console.log("failed: ", error);
 // });
 

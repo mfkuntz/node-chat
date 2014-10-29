@@ -25,17 +25,17 @@ ngApp.config(function($routeProvider, $locationProvider){
 
 ngApp.controller('mainController', function($scope){
 	function setLoginLabels(){
-		$scope.lUser = (!isLoggedIn())? "Login" : $scope.userName;
-		$scope.lLoginButton = (!isLoggedIn())? "Login" : "Logout";
+		$scope.lUser = (!isLoggedIn())? "Login" : $scope.user.userName;
+		
 	}
 
 	$scope.$on('login', function(event, args){
 		setLoginLabels();
 	});
 
-
+	$scope.user = {userName : "anonymous"};
+	$scope.lLoginButton = "Change Name";
 	setLoginLabels();
-	$scope.userName = "Test User";
 });
 
 ngApp.controller('loginController', function($scope, $http, $window){
@@ -43,42 +43,51 @@ ngApp.controller('loginController', function($scope, $http, $window){
 
 
 	$scope.login = function(){
-		var user = {
-			username : $scope.user.username,
-			password : $scope.user.password
-		};
+		$scope.user.userName = $scope.user.username; //sets scope user to textbox value; badly named atm
 		
-		$http
-			.post('/login', user)
-			.success(function(data, status, headers, config){
-				$window.sessionStorage.token = data.token;
-				$scope.$emit('login', true);
-			})
-			.error(function(){
-				delete $window.sessionStorage.token;
-			});
-
+		
+		// $http
+		// 	.post('/login', user)
+		// 	.success(function(data, status, headers, config){
+		// 		$window.sessionStorage.token = data.token;
+		// 		$scope.$emit('login', true);
+		// 	})
+		// 	.error(function(){
+		// 		delete $window.sessionStorage.token;
+		// 	});
+		$scope.$emit('login', true);
 		
 	};
 
 });
 
-ngApp.controller('chatController', function($scope){
-	$scope.messages = [];
+ngApp.controller('chatController', function($scope, $http){
+
 	$scope.roomName = "Public";
+	
+	$http.get('/api/chat/' + $scope.roomName)
+		.success(function(data){
+			$scope.messages = data;
+	});
+
 	var socket = io();
 
 	$scope.joinRoom = function(){
 		socket.emit('joinRoom', $scope.formData.roomName);
 		$scope.roomName = $scope.formData.roomName;
 		$scope.formData.roomName = "";
+
+		$http.get('/api/chat/' + $scope.roomName)
+			.success(function(data){
+				$scope.messages = data;
+		});
 		return false;
 	};
 
 	$scope.sendMessage = function(){
 		var message = {
-			reciever : 'User2',
-			sender : $scope.userName,
+			reciever : $scope.roomName,
+			sender : $scope.user.userName,
 			message : $scope.formData.chatMessage
 		};
 
@@ -87,7 +96,7 @@ ngApp.controller('chatController', function($scope){
 		$scope.formData.chatMessage = "";
 
 		$scope.messages.push(message);
-		return false;
+		$http.post('/api/chat', message);
 	};
 
 	socket.on('message', function(message){
