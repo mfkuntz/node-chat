@@ -65,11 +65,14 @@ ngApp.controller('loginController', function($scope, $http, $window){
 
 ngApp.controller('chatController', function($scope){
 	$scope.messages = [];
-
+	$scope.roomName = "Public";
 	var socket = io();
 
 	$scope.joinRoom = function(){
 		socket.emit('joinRoom', $scope.formData.roomName);
+		$scope.roomName = $scope.formData.roomName;
+		$scope.formData.roomName = "";
+		return false;
 	};
 
 	$scope.sendMessage = function(){
@@ -84,7 +87,7 @@ ngApp.controller('chatController', function($scope){
 		$scope.formData.chatMessage = "";
 
 		$scope.messages.push(message);
-
+		return false;
 	};
 
 	socket.on('message', function(message){
@@ -100,3 +103,18 @@ ngApp.controller('chatController', function($scope){
 function isLoggedIn(){
 	return (window.sessionStorage.token != null);
 }
+
+//figure out a custom directive for an enter event in the future
+// ngApp.directive('ng+enter', function(){
+// 	return function(scope, element, attrs) {
+//         element.bind("keydown keypress", function(event) {
+//             if(event.which === 13) {
+//                 scope.$apply(function(){
+//                     scope.$eval(attrs.ngEnter, {'event': event});
+//                 });
+
+//                 event.preventDefault();
+//             }
+//         });
+//     };
+// });

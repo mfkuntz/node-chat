@@ -1,5 +1,9 @@
+<h2>
+	Room : {{roomName}}
+</h2>
+
 <p>
-	<input type="text" ng-model="formData.roomName" placeholder="Enter Room Name"/> <button class="btn btn-primary" ng-click="joinRoom()">Join</button>
+	<input type="text" ng-model="formData.roomName" placeholder="Enter Room Name" /> <button class="btn btn-primary" ng-click="joinRoom()">Join</button>
 </p>
 
 <ul ng-repeat="message in messages">
@@ -7,5 +11,5 @@
 </ul>
 
 <p>
-	<input type="text" ng-model="formData.chatMessage"/> <button class="btn btn-primary" ng-click="sendMessage()">Send</button>
+	<input type="text" ng-model="formData.chatMessage" placeholder="Message" /> <button class="btn btn-primary" ng-click="sendMessage()">Send</button>
 <p>
