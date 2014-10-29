@@ -64,36 +64,36 @@ ngApp.controller('loginController', function($scope, $http, $window){
 });
 
 ngApp.controller('chatController', function($scope){
-	$scope.messages = [
-		{
-			sender : "Bob",
-			text : "Message 1"
-		},
-		{
-			sender : "Bob",
-			text : "Message 2"
-		},
-		{
-			sender : "Bob",
-			text : "Message 3"
-		},
-		{
-			sender : "Bob",
-			text : "Message 4"
-		}
-	];
+	$scope.messages = [];
+
+	var socket = io();
+
+	$scope.joinRoom = function(){
+		socket.emit('joinRoom', $scope.formData.roomName);
+	};
 
 	$scope.sendMessage = function(){
 		var message = {
+			reciever : 'User2',
 			sender : $scope.userName,
-			text : $scope.formData.chatMessage
+			message : $scope.formData.chatMessage
 		};
+
+		socket.emit('message', message);
 
 		$scope.formData.chatMessage = "";
 
 		$scope.messages.push(message);
 
 	};
+
+	socket.on('message', function(message){
+		console.log("Message rcd: ", message);
+		$scope.messages.push(message);		
+		$scope.$apply();
+	});
+
+
 });
 
 

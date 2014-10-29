@@ -3,7 +3,7 @@ var app      = express();
 var http = require('http').Server(app);
 
 var  bodyParser = require('body-parser');
-var io = require('socket.io')(http);
+
 var morgan = require('morgan');
 
 
@@ -18,35 +18,19 @@ app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse applica
 
 require('./app/routes').createRoutes(app);
 
-// io.on('connection', function(socket){
-// 	console.log('A user connected');
+require('./app/socket')(http);
 
-// 	socket.on('disconnect', function(){
-// 		console.log('user disconnected');
-// 	});
-
-// 	socket.on('message', function(msg){
-// 		console.log('message: ' + msg);
-// 		io.emit('message', msg);
-// 	});
+// var message = require('./app/models/chat');
+// message.sync().error(function(error){
+// 	console.log("failed: ", error);
 // });
 
-var SQLize = require('sequelize');
-var sql = new SQLize('chat', 'adminwriqzjg', 'JUPA_RU4siaq', {
-	dialect : "postgres",
-	port : 5432,
-	host : '127.0.0.1'
-});
-
-sql.authenticate()
-	.complete(function(err){
-		if (!!err){
-			console.log("Connect Failed: ", err);
-		}else{
-			console.log("Connected");
-		}
-	});
-
+// var newMessage = message.build({
+// 	sender : "test3",
+// 	reciever : "test4",
+// 	message : "HELLO THERE MAN"
+// })
+// .save();
 
 
 http.listen(8090);

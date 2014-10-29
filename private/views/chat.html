@@ -1,5 +1,9 @@
+<p>
+	<input type="text" ng-model="formData.roomName" placeholder="Enter Room Name"/> <button class="btn btn-primary" ng-click="joinRoom()">Join</button>
+</p>
+
 <ul ng-repeat="message in messages">
-	<li><strong>{{message.sender}}</strong> : {{message.text}} </li>
+	<li><strong>{{message.sender}}</strong> : {{message.message}} </li>
 </ul>
 
 <p>
