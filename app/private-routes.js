@@ -41,7 +41,7 @@ module.exports = function(app){
  					if (!!err){
  						console.log("eror: ", err);
  					}else{
- 						console.log("Success: ", data);
+ 						console.log("Success: ", data.Values);
  						res.json(data);
  					}
  				});
@@ -53,7 +53,7 @@ module.exports = function(app){
  					if (!!err){
  						console.log("eror: ", err);
  					}else{
- 						console.log("Success: ", data);
+ 						console.log("Success: ", data.Values);
  						res.json(data);
  					}
  				});
@@ -62,6 +62,9 @@ module.exports = function(app){
 
  	app.post('/api/chat', function(req,res){
  		var Message = require('./models/chat');
- 		Message.create(req.body);
+ 		Message.create(req.body).
+ 		success(function(message){
+ 			res.json(message);
+ 		});
  	});
 };

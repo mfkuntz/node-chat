@@ -20,7 +20,7 @@ require('./app/routes').createRoutes(app);
 
 require('./app/socket')(http);
 
-//clear table data
+// clear table data
 // var message = require('./app/models/chat');
 // message.sync({force : true}).error(function(error){
 // 	console.log("failed: ", error);
@@ -32,6 +32,8 @@ require('./app/socket')(http);
 // 	message : "HELLO THERE MAN"
 // })
 // .save();
+
+// require('./app/models/relations')();
 
 var serverInfo = require('./config/config')().server;
 

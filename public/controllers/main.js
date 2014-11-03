@@ -64,6 +64,13 @@ ngApp.controller('loginController', function($scope, $http, $window){
 ngApp.controller('chatController', function($scope, $http){
 
 	$scope.roomName = "Public";
+	$scope.viewRoomEdit = false;
+	$scope.joinButtonText = "Edit Room";
+
+	$scope.editRoom = function(){ 
+		$scope.viewRoomEdit = true;
+		$scope.joinButtonText = "Change Room";		
+	};
 	
 	$http.get('/api/chat/' + $scope.roomName)
 		.success(function(data){
@@ -73,6 +80,12 @@ ngApp.controller('chatController', function($scope, $http){
 	var socket = io();
 
 	$scope.joinRoom = function(){
+		
+		if (! $scope.viewRoomEdit){
+			$scope.editRoom();
+			return;
+		}
+
 		socket.emit('joinRoom', $scope.formData.roomName);
 		$scope.roomName = $scope.formData.roomName;
 		$scope.formData.roomName = "";
@@ -81,6 +94,9 @@ ngApp.controller('chatController', function($scope, $http){
 			.success(function(data){
 				$scope.messages = data;
 		});
+
+		$scope.viewRoomEdit = false;
+		$scope.joinButtonText = "Edit Room";	
 		return false;
 	};
 
@@ -95,8 +111,11 @@ ngApp.controller('chatController', function($scope, $http){
 
 		$scope.formData.chatMessage = "";
 
-		$scope.messages.push(message);
-		$http.post('/api/chat', message);
+		
+		$http.post('/api/chat', message)
+			.success(function(data){
+				$scope.messages.push(data);		
+			});
 	};
 
 	socket.on('message', function(message){
