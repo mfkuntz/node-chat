@@ -1,3 +1,4 @@
-The OpenShift `nodejs` cartridge documentation can be found at:
+A simple test application of Node.JS, Express and Socket.io
+===========================================================
 
-http://openshift.github.io/documentation/oo_cartridge_guide.html#nodejs
+To use, fill in the config.js file or create your own private_*.js to house various deployment options that aren't tracked by git. 
