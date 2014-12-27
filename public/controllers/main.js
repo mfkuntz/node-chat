@@ -25,7 +25,7 @@ ngApp.config(function($routeProvider, $locationProvider){
 
 ngApp.controller('mainController', function($scope){
 	function setLoginLabels(){
-		$scope.lUser = (!isLoggedIn())? "Login" : $scope.user.userName;
+		$scope.lUser = ($scope.user.userName == 'anonymous') ? "Login" : $scope.user.userName;
 		
 	}
 
